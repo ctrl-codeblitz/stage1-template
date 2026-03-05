@@ -1,3 +1,5 @@
+Factorial
+
 Problem: Compute n! for non-negative integer n iteratively. (Assume result fits in 64-bit for this exercise.)
 Input: integer n
 Output: n!

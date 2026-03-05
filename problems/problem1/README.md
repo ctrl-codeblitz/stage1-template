@@ -1,3 +1,5 @@
+Sum of numbers
+
 Problem: Read an integer n, then read n integers and output their sum.
 Input: first line n, second line n integers (or one per line)
 Output: sum

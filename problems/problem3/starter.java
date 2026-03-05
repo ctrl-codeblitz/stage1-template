@@ -1,5 +1,1 @@
-package problems.problem3;
-
-public class starter {
-    
-}
+// No starter code provided
