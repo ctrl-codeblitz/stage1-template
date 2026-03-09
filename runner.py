@@ -4,7 +4,34 @@ import subprocess
 import sys
 import tempfile
 import shutil
+import time
 from pathlib import Path
+
+#gets Stage based on the name of the stage
+def getStage():
+    folder_name = Path.cwd().name
+    if "stage1" in folder_name:
+        return 1
+    elif "stage2" in folder_name:
+        return 2
+    elif "stage3" in folder_name:
+        return 3
+    return None
+
+#gets the weight based on the level of problem
+def lvlWeight(lvlN):
+    weights = {1: 100, 2: 150, 3: 400}
+    return weights.get(lvlN, 0)
+
+def calcScore(correct, fullCreditTime, limit, userDuration, level):
+    if not correct: return 0
+    max_p = lvlWeight(level)
+    if userDuration <= fullCreditTime: return max_p
+    if userDuration > limit: return 0
+    
+    # Linear decay formula
+    factor = (limit - userDuration) / (limit - fullCreditTime)
+    return round(max_p * factor, 2)
 
 
 def normalize(text):
@@ -25,8 +52,9 @@ def detect_language(file_path):
         return "cpp"
     return None
 
-
+#edited run_command to return userDuration as well as timeout time
 def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
+    start = time.time()
     try:
         result = subprocess.run(
             cmd,
@@ -35,9 +63,10 @@ def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
             capture_output=True,
             timeout=timeout
         )
-        return result.returncode, result.stdout.decode(), result.stderr.decode()
+        duration = time.time() - start
+        return result.returncode, result.stdout.decode(), result.stderr.decode(), duration
     except subprocess.TimeoutExpired:
-        return 124, "", "TIMEOUT"
+        return 124, "", "TIMEOUT", timeout
 
 
 def compile_cpp(file_path, build_dir):
@@ -102,7 +131,7 @@ def main():
                 print(error, file=sys.stderr)
                 sys.exit(2)
 
-        rc, stdout, stderr = run_command(
+        rc, stdout, stderr, duration = run_command(
             command,
             cwd=submission.parent,
             stdin_data=stdin_data,
@@ -118,8 +147,20 @@ def main():
             print(stderr, file=sys.stderr)
             sys.exit(3)
 
-        if normalize(stdout) == normalize(expected_output):
-            print("PASS")
+
+        userScore = 0
+        isCorrect = normalize(stdout) == normalize(expected_output)
+        #made the if statement check for score as a boolean
+        userScore += calcScore(isCorrect, fullCreditTime=args.timeout/2, 
+        limit=args.timeout, 
+        userDuration=duration, 
+        level=getStage())
+        #args timeout/2 is full credit, lmk if want to change
+        #used the boolean in the scoreCalc method with level=args.level calling stuff
+        # += for score that starts at 0, for later stage addition
+
+        if isCorrect:
+            print(f"PASS | Time: {duration:.2f}s | Score: {userScore}")
             sys.exit(0)
         else:
             print("FAIL")
