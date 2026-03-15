@@ -1,7 +1,11 @@
 name: Grade Submissions
 
 on:
-  push
+  push:
+    branches:
+      - main
+    paths:
+      - 'solutions/**'
 
 jobs:
   grade:

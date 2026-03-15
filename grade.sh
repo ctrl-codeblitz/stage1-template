@@ -19,6 +19,7 @@ shopt -s nullglob
 fail=0
 total=0
 passed=0
+failed=0 #new variable to track failed tests
 
 for prob_dir in solutions/*/; do
   prob_name="$(basename "$prob_dir")"
@@ -48,6 +49,7 @@ for prob_dir in solutions/*/; do
   else
     echo "ERROR: No submission found in $prob_dir (expected .py, .java, or .cpp)"
     fail=1
+    failed=$((failed+1)) #count for failed here
     continue
   fi
 
@@ -82,6 +84,7 @@ for prob_dir in solutions/*/; do
     else
       echo "Test FAILED: $base"
       fail=1
+      failed=$((failed+1))
     fi
   done
 done
