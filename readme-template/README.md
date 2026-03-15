@@ -81,6 +81,24 @@ git commit -m "Solved problem X"
 git push origin main
 ```
 
+### Checking Your Results
+ 
+After pushing, navigate to the **Actions** tab on GitHub to see your grading status:
+ 
+- ✅ **Green** — All test cases passed! You have a correct solution and will be automatically progressed to the next stage.
+- 🟡 **Yellow** — Still grading, please wait.
+- ❌ **Red** — One or more test cases failed. Please recheck your solution.
+ 
+### Moving to the Next Stage
+ 
+Once you pass, go back to the **Code** tab on GitHub and confirm the next stage directory is present. If it isn't, alert an Event Organizer.
+ 
+Then pull the latest changes to start working on the next stage:
+ 
+```bash
+git pull
+```
+
 ---
 
 ## Important Rules
