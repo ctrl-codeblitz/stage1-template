@@ -4,6 +4,8 @@ on:
   push:
     paths: 
       - 'stage1/solutions/**'
+      - 'stage2/solutions/**'
+      - 'stage3/solutions/**'
 
 jobs:
   grade:
