@@ -63,6 +63,15 @@ for prob_dir in solutions/*/; do
     continue
   fi
 
+  #make sure we have at least 3 test cases to be a valid test set, otherwise it's too easy to pass by chance
+  MIN_TESTS=3
+  if [[ ${#inputs[@]} -lt $MIN_TESTS ]]; then
+    echo "ERROR: Only ${#inputs[@]} test case(s) found in $test_dir, expected at least $MIN_TESTS"
+    fail=1
+    continue
+  fi
+  #todo: maybe make chmod permissions for the tests/ folders so read-only for competitors but readable for admin
+
   for in_file in "${inputs[@]}"; do
     base="$(basename "$in_file")"
     suffix="${base#input}"           # e.g., "1.txt"
