@@ -1,6 +1,4 @@
-# CodeBlitz
-
-Welcome to CodeBlitz! We're excited for you to join our high-speed coding competition. This repository is your central hub for all challenges, starter code, and submissions.
+We're excited for you to join our high-speed coding competition. This repository is your central hub for all challenges, starter code, and submissions.
 
 ---
 
