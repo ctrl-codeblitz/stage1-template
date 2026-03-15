@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+STAGE_DIR="${1:-.}"
+
 echo "== Environment =="
 python3 --version
 g++ --version
@@ -8,7 +10,7 @@ javac -version
 java -version
 
 echo ""
-echo "== Grading =="
+echo "== Grading Directory: $STAGE_DIR =="
 
 # Expect structure:
 # solutions/<problem>/solution.py OR Main.java OR solution.cpp (or similar)
@@ -20,12 +22,13 @@ fail=0
 total=0
 passed=0
 
-for prob_dir in solutions/*/; do
+for prob_dir in "$STAGE_DIR"/solutions/*/; do
   prob_name="$(basename "$prob_dir")"
-  echo ""
-  echo "---- Problem: $prob_name ----"
-
-  test_dir="tests/$prob_name"
+  prob_dir_clean="${prob_dir%/}"
+  prob_folder_name=$(basename "$prob_dir_clean")
+  prob_num=$(echo "$prob_folder_name" | grep -oE '[0-9]+')
+  
+  test_dir="$STAGE_DIR/tests/problem$prob_num"
   if [[ ! -d "$test_dir" ]]; then
     echo "ERROR: Missing test directory: $test_dir"
     fail=1
@@ -87,13 +90,14 @@ for prob_dir in solutions/*/; do
 done
 
 echo ""
-echo "== Summary =="
+echo "========== Summary =========="
 echo "Passed $passed / $total tests"
+echo "============================="
 
 if [[ $fail -ne 0 ]]; then
-  echo "OVERALL: FAIL"
+  echo "OVERALL RESULT: FAIL"
   exit 1
 else
-  echo "OVERALL: PASS"
+  echo "OVERALL RESULT: PASS"
   exit 0
 fi
