@@ -2,17 +2,46 @@ name: Grade Submissions
 
 on:
   push:
-    branches:
-      - main
+    paths: 
+      - 'stage1/solutions/**'
+      - 'stage2/solutions/**'
+      - 'stage3/solutions/**'
 
 jobs:
   grade:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+      
+      - name: Detect Stage
+        id: set_stage
+        run: |
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "stage1/"; then
+            echo "current_stage=1" >> $GITHUB_OUTPUT
+            echo "next_stage=2" >> $GITHUB_OUTPUT
+          elif echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "stage2/"; then
+            echo "current_stage=2" >> $GITHUB_OUTPUT
+            echo "next_stage=3" >> $GITHUB_OUTPUT
+          fi
       
       - name: Make script executable
         run: chmod +x grade.sh
       
       - name: Run grading script
-        run: ./grade.sh
+        run: ./grade.sh stage${{ steps.set_stage.outputs.current_stage }}
+
+      - name: Proceed to next stage
+        if: success()
+        run: |
+          curl -X POST https://unfurbished-nonmanifest-alishia.ngrok-free.dev/next-stage \
+          --connect-timeout 20 \
+          --max-time 60 \
+          -H "Content-Type: application/json" \
+          -d '{
+            "team_name": "${{ github.event.repository.name }}",
+            "stage": ${{ steps.set_stage.outputs.next_stage }}
+          }'
