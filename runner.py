@@ -4,8 +4,8 @@ import subprocess
 import sys
 import tempfile
 import shutil
+import time
 from pathlib import Path
-
 
 def normalize(text):
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -25,8 +25,9 @@ def detect_language(file_path):
         return "cpp"
     return None
 
-
+#edited run_command to return userDuration as well as timeout time
 def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
+    start = time.time()
     try:
         result = subprocess.run(
             cmd,
@@ -35,9 +36,10 @@ def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
             capture_output=True,
             timeout=timeout
         )
-        return result.returncode, result.stdout.decode(), result.stderr.decode()
+        duration = time.time() - start
+        return result.returncode, result.stdout.decode(), result.stderr.decode(), duration
     except subprocess.TimeoutExpired:
-        return 124, "", "TIMEOUT"
+        return 124, "", "TIMEOUT", timeout
 
 
 def compile_cpp(file_path, build_dir):
@@ -102,12 +104,13 @@ def main():
                 print(error, file=sys.stderr)
                 sys.exit(2)
 
-        rc, stdout, stderr = run_command(
+        rc, stdout, stderr, duration = run_command(
             command,
             cwd=submission.parent,
             stdin_data=stdin_data,
             timeout=args.timeout
         )
+        #changed here to include duration so I can use for scoreCalc
 
         if rc == 124:
             print("TIMEOUT", file=sys.stderr)
@@ -118,8 +121,9 @@ def main():
             print(stderr, file=sys.stderr)
             sys.exit(3)
 
+
         if normalize(stdout) == normalize(expected_output):
-            print("PASS")
+            print(f"PASS")
             sys.exit(0)
         else:
             print("FAIL")

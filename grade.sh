@@ -21,6 +21,7 @@ shopt -s nullglob
 fail=0
 total=0
 passed=0
+failed=0 #new variable to track failed tests
 
 for prob_dir in "$STAGE_DIR"/solutions/*/; do
   prob_name="$(basename "$prob_dir")"
@@ -51,6 +52,7 @@ for prob_dir in "$STAGE_DIR"/solutions/*/; do
   else
     echo "ERROR: No submission found in $prob_dir (expected .py, .java, or .cpp)"
     fail=1
+    failed=$((failed+1)) #count for failed here
     continue
   fi
 
@@ -63,6 +65,15 @@ for prob_dir in "$STAGE_DIR"/solutions/*/; do
     fail=1
     continue
   fi
+
+  #make sure we have at least 3 test cases to be a valid test set, otherwise it's too easy to pass by chance
+  MIN_TESTS=3
+  if [[ ${#inputs[@]} -lt $MIN_TESTS ]]; then
+    echo "ERROR: Only ${#inputs[@]} test case(s) found in $test_dir, expected at least $MIN_TESTS"
+    fail=1
+    continue
+  fi
+  #todo: maybe make chmod permissions for the tests/ folders so read-only for competitors but readable for admin
 
   for in_file in "${inputs[@]}"; do
     base="$(basename "$in_file")"
@@ -85,6 +96,7 @@ for prob_dir in "$STAGE_DIR"/solutions/*/; do
     else
       echo "Test FAILED: $base"
       fail=1
+      failed=$((failed+1))
     fi
   done
 done
