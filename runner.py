@@ -16,15 +16,9 @@ def detect_language(file_path):
     return mapping.get(ext)
 
 
-def get_problem_num(path):
-    """Extracts digits from the parent folder name (e.g., solution14 -> 14)."""
-    # Check the immediate folder name first
-    folder_nums = re.findall(r'\d+', path.parent.name)
-    if folder_nums:
-        return folder_nums[0]
-    # Fallback to searching the whole path
-    path_nums = re.findall(r'\d+', str(path))
-    return path_nums[0] if path_nums else "?"
+def extract_num(text):
+    nums = re.findall(r'\d+', str(text))
+    return nums[-1] if nums else "0"
 
 
 def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
@@ -51,67 +45,104 @@ def compile_java(file_path, build_dir):
     return (["java", "-cp", str(build_dir), "Main"], None) if rc == 0 else (None, err)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--file", help="Solution file")
-    parser.add_argument("--stdin", help="Input file")
-    parser.add_argument("--expected", help="Expected file")
-    parser.add_argument("--timeout", type=int, default=10)
-    args = parser.parse_args()
+def run_test_logic(sub, infile, expfile, timeout):
+    if not sub or not sub.exists() or sub.stat().st_size == 0:
+        return "MISSING", "", 0
 
-    # 1. Detection
-    sub_path = args.file
-    if not sub_path:
-        valid = [f for f in Path('.').glob('**/*') if f.suffix in ['.py', '.cpp', '.java']
-                 and "solutions" in str(f).lower() and "problems" not in str(f).lower()]
-        if not valid: return
-        sub_path = valid[0]
+    if not infile.exists() or not expfile.exists():
+        return "SKIPPED", "Missing expected file", 0
 
-    sub = Path(sub_path).resolve()
-    prob_num = get_problem_num(sub)
-
-    in_path = args.stdin or next(Path('.').glob('**/input1.txt'), None)
-    exp_path = args.expected or next(Path('.').glob('**/expected1.txt'), None)
-
-    if not all([sub, in_path, exp_path]): return
-    infile, expfile = Path(in_path).resolve(), Path(exp_path).resolve()
     lang = detect_language(sub)
-
-    # 2. Execution
     with tempfile.TemporaryDirectory() as tmp:
-        build_dir = Path(tmp)
-        run_cwd = sub.parent
+        build_dir, run_cwd = Path(tmp), sub.parent
 
         if lang == "python":
             command = [sys.executable, str(sub)]
         elif lang == "cpp":
             command_str, err = compile_cpp(sub, build_dir)
-            if err: print(f"P{prob_num} COMPILE ERROR: {sub.name}\n{err}"); sys.exit(2)
+            if err: return "COMPILE_ERROR", err, 0
             command = [command_str]
         elif lang == "java":
             command, err = compile_java(sub, build_dir)
-            if err: print(f"P{prob_num} COMPILE ERROR: {sub.name}\n{err}"); sys.exit(2)
+            if err: return "COMPILE_ERROR", err, 0
             run_cwd = build_dir
+        else:
+            return "UNSUPPORTED", "", 0
 
-        rc, stdout, stderr, dur = run_command(command, run_cwd, infile.read_bytes(), args.timeout)
+        rc, stdout, stderr, dur = run_command(command, run_cwd, infile.read_bytes(), timeout)
 
-        # 3. Output with Problem Number
-        prefix = f"[P{prob_num}] {infile.name}:"
-
-        if rc == 124:
-            print(f"{prefix} TIMEOUT ({args.timeout}s)")
-            sys.exit(4)
-        if rc != 0:
-            print(f"{prefix} RUNTIME ERROR\n{stderr}")
-            sys.exit(3)
+        if rc == 124: return "TIMEOUT", "", dur
+        if rc != 0: return "RUNTIME_ERROR", stderr, dur
 
         actual, expected = normalize(stdout), normalize(expfile.read_text())
         if actual == expected:
-            print(f"{prefix} PASS ({dur:.3f}s)")
+            return "PASS", "", dur
         else:
-            print(f"{prefix} FAIL")
-            print(f"  Exp: {expected}\n  Act: {actual}")
-            sys.exit(1)
+            return "FAIL", (expected, actual), dur
+
+
+def print_result(infile_name, status, details, dur):
+    if status == "PASS":
+        print(f"  {infile_name}: PASS ({dur:.3f}s)")
+    elif status == "FAIL":
+        expected, actual = details
+        print(f"  {infile_name}: FAIL")
+        print(f"    expected: {expected}")
+        print(f"    actual:   {actual}")
+    elif status == "MISSING":
+        print(f"  {infile_name}: MISSING SOLUTION")
+    elif status == "TIMEOUT":
+        print(f"  {infile_name}: TIMEOUT ({dur:.1f}s)")
+    elif status in ["COMPILE_ERROR", "RUNTIME_ERROR"]:
+        print(f"  {infile_name}: {status.replace('_', ' ')}")
+    else:
+        print(f"  {infile_name}: {status}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dir", default=".", help="Base directory to grade (e.g., stage1)")
+    parser.add_argument("--timeout", type=int, default=10)
+    parser.add_argument("--all", action="store_true", help="Run ALL test cases for every problem")
+    args = parser.parse_args()
+
+    base_dir = Path(args.dir)
+    test_folders = sorted(list(base_dir.glob('**/tests/**/problem*')), key=lambda p: int(extract_num(p.name)))
+
+    if not test_folders:
+        print(f"No problem folders found in {base_dir}/tests/")
+        return
+
+    passed_count, total_count = 0, 0
+
+    for test_dir in test_folders:
+        prob_num = extract_num(test_dir.name)
+        print(f"[P{prob_num}]")
+
+        # Terminal run gets just 1 test, bash script (--all) gets everything
+        if args.all:
+            test_cases = sorted(list(test_dir.glob("input*.txt")))
+        else:
+            default_test = test_dir / "input1.txt"
+            test_cases = [default_test] if default_test.exists() else []
+
+        sol_pattern = f"**/solutions/**/solution{prob_num}/**/*"
+        potential_sols = [f for f in base_dir.glob(sol_pattern) if f.suffix in ['.py', '.cpp', '.java'] and f.is_file()]
+        sub = potential_sols[0] if potential_sols else None
+
+        for infile in test_cases:
+            total_count += 1
+            expfile = test_dir / infile.name.replace("input", "expected")
+
+            status, details, dur = run_test_logic(sub, infile, expfile, args.timeout)
+            print_result(infile.name, status, details, dur)
+
+            if status == "PASS": passed_count += 1
+
+    print(f"\n========== Summary ==========")
+    print(f"Passed {passed_count} / {total_count} tests")
+    print(f"=============================")
+    sys.exit(0 if passed_count == total_count else 1)
 
 
 if __name__ == "__main__":
