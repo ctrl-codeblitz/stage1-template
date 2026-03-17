@@ -87,6 +87,7 @@ def main():
 
     with tempfile.TemporaryDirectory() as tmp:
         build_dir = Path(tmp)
+        run_cwd = submission.parent
 
         if lang == "python":
             command = ["python3", str(submission)]
@@ -103,10 +104,11 @@ def main():
             if error:
                 print(error, file=sys.stderr)
                 sys.exit(2)
+            run_cwd = build_dir
 
         rc, stdout, stderr, duration = run_command(
             command,
-            cwd=submission.parent,
+            cwd=run_cwd,
             stdin_data=stdin_data,
             timeout=args.timeout
         )
