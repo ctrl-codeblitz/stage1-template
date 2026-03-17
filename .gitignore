@@ -1,0 +1,16 @@
+.github/
+.vscode/
+.idea/
+
+stage1/problems/*
+stage1/tests/*
+
+stage2/problems/*
+stage2/tests/*
+
+stage3/problems/*
+stage3/tests/*
+
+README.md
+grade.sh
+runner.py
