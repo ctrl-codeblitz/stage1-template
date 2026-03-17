@@ -45,7 +45,7 @@ def run_command(cmd, cwd=None, stdin_data=None, timeout=10):
 def compile_cpp(file_path, build_dir):
     output_binary = build_dir / "prog"
     cmd = ["g++", "-O2", "-std=c++17", str(file_path), "-o", str(output_binary)]
-    rc, out, err = run_command(cmd)
+    rc, out, err, _ = run_command(cmd)
     if rc != 0:
         return None, err
     return str(output_binary), None
@@ -55,7 +55,7 @@ def compile_java(file_path, build_dir):
     if file_path.name != "Main.java":
         return None, "Java file must be named Main.java"
     shutil.copy(file_path, build_dir / "Main.java")
-    rc, out, err = run_command(["javac", "Main.java"], cwd=build_dir)
+    rc, out, err, _ = run_command(["javac", "Main.java"], cwd=build_dir)
     if rc != 0:
         return None, err
     return ["java", "-cp", str(build_dir), "Main"], None
