@@ -69,14 +69,14 @@ stage{x}/
 
 ## How to check your code(using Terminal)
 
-There is functionality to test your code through terminal access. 
+There is functionality to test your code through **Terminal** access. 
 All IDEs should have some way to create **New Terminal** which may be used for testing.
 
-In Clion, in the **Menu Bar** there is **View | Tool Windows | Terminal**
-In IntelliJ, similarly in the **Menu Bar** there is **View | Tool Windows | Terminal**
-In Visual Studio Code, in the **Menu Bar** there is  
+In Clion, in the **Menu Bar** there is **View | Tool Windows | Terminal**.
+In IntelliJ, similarly in the **Menu Bar** there is **View | Tool Windows | Terminal**.
+In Visual Studio Code, in the **Menu Bar** there is **View > Terminal** or **Terminal > New Terminal**
 
-Right-clicking a file may also lead to use of the terminal.
+Right-clicking a file may also lead to use of the **Terminal**.
 
 The terminal should pop up as a seperate window in which to test your code.
 By calling the line, **python3 -c runner.py** in the terminal you can test your code.
