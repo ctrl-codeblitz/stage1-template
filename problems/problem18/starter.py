@@ -1,1 +1,1 @@
-# No starter code provided
+print("hello world")
