@@ -1,1 +1,6 @@
-// No starter code provided
+#include <iostream>
+using namespace std;
+
+int main() {
+    
+}
