@@ -67,6 +67,24 @@ stage{x}/
 - **`tests/`** — Contains input/expected output files used by the automated grader. **Do not touch anything here — modifying test files will result in disqualification.**
 ---
 
+## How to check your code(using Terminal)
+
+There is functionality to test your code through terminal access. 
+All IDEs should have some way to create **New Terminal** which may be used for testing.
+
+In Clion, in the **Menu Bar** there is **View | Tool Windows | Terminal**
+In IntelliJ, similarly in the **Menu Bar** there is **View | Tool Windows | Terminal**
+In Visual Studio Code, in the **Menu Bar** there is  
+
+Right-clicking a file may also lead to use of the terminal.
+
+The terminal should pop up as a seperate window in which to test your code.
+By calling the line, **python3 -c runner.py** in the terminal you can test your code.
+**Note** that this test will **NOT** count as a submission. 
+It is only as useful as you make it for checking your code against the test cases.
+
+
+
 ## How to Submit
 
 To ensure your work is graded, follow these specific submission rules:
