@@ -101,48 +101,65 @@ def print_result(infile_name, status, details, dur):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dir", default=".", help="Base directory to grade (e.g., stage1)")
+    parser.add_argument("--dir", help="Base directory to grade (e.g., stage1)")
     parser.add_argument("--timeout", type=int, default=10)
     parser.add_argument("--all", action="store_true", help="Run ALL test cases for every problem")
     args = parser.parse_args()
 
-    base_dir = Path(args.dir)
-    test_folders = sorted(list(base_dir.glob('**/tests/**/problem*')), key=lambda p: int(extract_num(p.name)))
+    if args.dir:
+        stage_dirs = [Path(args.dir)]
+    else:
+        stage_dirs = sorted([p for p in Path(".").glob('stage*') if p.is_dir()], key=lambda p: int(extract_num(p.name)))
 
-    if not test_folders:
-        print(f"No problem folders found in {base_dir}/tests/")
+    if not stage_dirs:
+        print("No stage directories found.")
         return
 
-    passed_count, total_count = 0, 0
+    total_passed, total_tests = 0, 0
 
-    for test_dir in test_folders:
-        prob_num = extract_num(test_dir.name)
-        print(f"[P{prob_num}]")
+    for stage_dir in stage_dirs:
+        print(f"========== Grading {stage_dir.name} ==========")
+        test_folders = sorted(list(stage_dir.glob('**/tests/**/problem*')), key=lambda p: int(extract_num(p.name)))
 
-        # Terminal run gets just 1 test, bash script (--all) gets everything
-        if args.all:
-            test_cases = sorted(list(test_dir.glob("input*.txt")))
-        else:
-            default_test = test_dir / "input1.txt"
-            test_cases = [default_test] if default_test.exists() else []
+        if not test_folders:
+            print(f"No problem folders found in {stage_dir}/tests/")
+            continue
 
-        sol_pattern = f"**/solutions/**/solution{prob_num}/**/*"
-        potential_sols = [f for f in base_dir.glob(sol_pattern) if f.suffix in ['.py', '.cpp', '.java'] and f.is_file()]
-        sub = potential_sols[0] if potential_sols else None
+        stage_passed, stage_total = 0, 0
 
-        for infile in test_cases:
-            total_count += 1
-            expfile = test_dir / infile.name.replace("input", "expected")
+        for test_dir in test_folders:
+            prob_num = extract_num(test_dir.name)
+            print(f"[P{prob_num}]")
 
-            status, details, dur = run_test_logic(sub, infile, expfile, args.timeout)
-            print_result(infile.name, status, details, dur)
+            if args.all:
+                test_cases = sorted(list(test_dir.glob("input*.txt")))
+            else:
+                default_test = test_dir / "input1.txt"
+                test_cases = [default_test] if default_test.exists() else []
 
-            if status == "PASS": passed_count += 1
+            sol_pattern = f"**/solutions/**/solution{prob_num}/**/*"
+            potential_sols = [f for f in stage_dir.glob(sol_pattern) if f.suffix in ['.py', '.cpp', '.java'] and f.is_file()]
+            sub = potential_sols[0] if potential_sols else None
 
-    print(f"\n========== Summary ==========")
-    print(f"Passed {passed_count} / {total_count} tests")
-    print(f"=============================")
-    sys.exit(0 if passed_count == total_count else 1)
+            for infile in test_cases:
+                stage_total += 1
+                expfile = test_dir / infile.name.replace("input", "expected")
+
+                status, details, dur = run_test_logic(sub, infile, expfile, args.timeout)
+                print_result(infile.name, status, details, dur)
+
+                if status == "PASS":
+                    stage_passed += 1
+        
+        total_passed += stage_passed
+        total_tests += stage_total
+        print(f"----- {stage_dir.name} Summary: {stage_passed}/{stage_total} passed -----")
+
+
+    print(f"\n========== Overall Summary ==========")
+    print(f"Passed {total_passed} / {total_tests} tests")
+    print(f"===================================")
+    sys.exit(0 if total_passed == total_tests else 1)
 
 
 if __name__ == "__main__":
