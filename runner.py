@@ -39,10 +39,10 @@ def compile_cpp(file_path, build_dir):
 
 
 def compile_java(file_path, build_dir):
-    if file_path.name != "Main.java": return None, "Java file must be named Main.java"
-    shutil.copy(file_path, build_dir / "Main.java")
-    rc, _, err, _ = run_command(["javac", "Main.java"], cwd=build_dir)
-    return (["java", "-cp", str(build_dir), "Main"], None) if rc == 0 else (None, err)
+    if file_path.name != "starter.java": return None, "Java file must be named starter.java"
+    shutil.copy(file_path, build_dir / "starter.java")
+    rc, _, err, _ = run_command(["javac", "starter.java"], cwd=build_dir)
+    return (["java", "-cp", str(build_dir), "starter"], None) if rc == 0 else (None, err)
 
 
 def run_test_logic(sub, infile, expfile, timeout):
