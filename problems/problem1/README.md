@@ -15,8 +15,8 @@ A single integer: the sum of the n integers.
 ## Example
 
 Input:
-4
-1 2 3 4
+- 4
+- 1 2 3 4
 
 Output:
 10
