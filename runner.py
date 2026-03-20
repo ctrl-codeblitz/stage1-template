@@ -57,7 +57,7 @@ def run_test_logic(sub, infile, expfile, timeout):
         build_dir, run_cwd = Path(tmp), sub.parent
 
         if lang == "python":
-            command = [sys.executable, str(sub)]
+            command = [sys.executable, sub.name]
         elif lang == "cpp":
             command_str, err = compile_cpp(sub, build_dir)
             if err: return "COMPILE_ERROR", err, 0
@@ -95,6 +95,8 @@ def print_result(infile_name, status, details, dur):
         print(f"  {infile_name}: TIMEOUT ({dur:.1f}s)")
     elif status in ["COMPILE_ERROR", "RUNTIME_ERROR"]:
         print(f"  {infile_name}: {status.replace('_', ' ')}")
+        if details: # details will be stderr for RUNTIME_ERROR
+            print(f"    Error details: {details.strip()}")
     else:
         print(f"  {infile_name}: {status}")
 
@@ -109,11 +111,7 @@ def main():
     if args.dir:
         stage_dirs = [Path(args.dir)]
     else:
-        stage_dirs = sorted([p for p in Path(".").glob('stage*') if p.is_dir()], key=lambda p: int(extract_num(p.name)))
-
-    if not stage_dirs:
-        print("No stage directories found.")
-        return
+        stage_dirs = [Path(".")]
 
     total_passed, total_tests = 0, 0
 
@@ -137,7 +135,7 @@ def main():
                 default_test = test_dir / "input1.txt"
                 test_cases = [default_test] if default_test.exists() else []
 
-            sol_pattern = f"**/solutions/**/solution{prob_num}/**/*"
+            sol_pattern = f"solutions/problem{prob_num}/**/*"
             potential_sols = [f for f in stage_dir.glob(sol_pattern) if f.suffix in ['.py', '.cpp', '.java'] and f.is_file()]
             sub = potential_sols[0] if potential_sols else None
 
