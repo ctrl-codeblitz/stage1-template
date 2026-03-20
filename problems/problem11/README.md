@@ -15,8 +15,8 @@ A single integer: the second-largest distinct value.
 ## Example
 
 Input:
-5
-4 1 5 3 2
+- 5
+- 4 1 5 3 2
 
 Output:
 4
