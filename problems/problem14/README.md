@@ -17,9 +17,9 @@ If no pair exists, print [].
 ## Example
 
 Input:
-5
-1 5 8 12 20
-32
+- 5
+- 1 5 8 12 20
+- 32
 
 Output:
 [3, 4]
