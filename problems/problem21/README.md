@@ -15,8 +15,8 @@ A single line of space-separated integers: nums rotated right by k.
 ## Example
 
 Input:
-1 2 3 4 5
-2
+- 1 2 3 4 5
+- 2
 
 Output:
 4 5 1 2 3
