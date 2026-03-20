@@ -1,8 +1,28 @@
-sum of digits
+# Problem 8 - Sum of Digits
 
-Problem: Given non-negative integer n, return the sum of its decimal digits.
+Given a non-negative integer n, return the sum of its decimal digits.
 
-Input: integer n
-Output: sum of digits
-Example: n=493 → 16
-Time: O(digits), Space: O(1)
+## Input Format
+
+A single integer n.
+
+## Output Format
+
+A single integer: the sum of digits of n.
+
+## Example
+
+Input:
+493
+
+Output:
+16
+
+## Constraints
+
+- n >= 0.
+
+## Expected Complexity
+
+- Time: O(number of digits)
+- Space: O(1)

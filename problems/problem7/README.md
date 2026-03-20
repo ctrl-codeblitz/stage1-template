@@ -1,8 +1,30 @@
-Finding maximum
+# Problem 7 - Find Maximum
 
-Problem: Given a list of numbers, find the maximum value.
+Given a list of numbers, find the maximum value.
 
-Input: first n, then n numbers
-Output: maximum
-Example: n=5 numbers 3 9 1 4 8 → 9
-Time: O(n), Space: O(1)
+## Input Format
+
+- First line: an integer n.
+- Second line (or subsequent whitespace-separated tokens): n integers.
+
+## Output Format
+
+A single integer: the maximum value in the list.
+
+## Example
+
+Input:
+5
+3 9 1 4 8
+
+Output:
+9
+
+## Constraints
+
+- n >= 1.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

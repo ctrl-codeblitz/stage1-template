@@ -1,9 +1,29 @@
-GCD
+# Problem 22 - Greatest Common Divisor (GCD)
 
-Problem: Compute the greatest common divisor of two integers.
+Compute the greatest common divisor of two integers.
 
-Input: two integers a and b
-Output: integer gcd(a, b)
-Example: a=48, b=18 → 6
-Time: O(log min(a,b))
-Space: O(1)
+## Input Format
+
+Two integers a and b separated by whitespace.
+They may appear on one line or separate lines.
+
+## Output Format
+
+A single integer: gcd(a, b).
+
+## Example
+
+Input:
+48 18
+
+Output:
+6
+
+## Constraints
+
+- Inputs are integers in 64-bit signed range.
+
+## Expected Complexity
+
+- Time: O(log(min(a, b)))
+- Space: O(1)

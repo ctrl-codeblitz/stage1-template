@@ -1,9 +1,30 @@
-merge lists
+# Problem 18 - Merge Sorted Lists
 
-Problem: Given two sorted lists, merge them into a single sorted list.
+Given two sorted integer lists, merge them into one sorted list.
 
-Input: two sorted arrays/lists a, b
-Output: sorted merged array/list containing all elements from both
-Example: [1,3,5] and [2,4] → [1,2,3,4,5]
-Time: O(n+m)
-Space: O(n+m) unless you merge in-place where possible
+## Input Format
+
+- First line: sorted integers for list a (space-separated).
+- Second line: sorted integers for list b (space-separated).
+
+## Output Format
+
+A single line of space-separated integers: the merged sorted list.
+
+## Example
+
+Input:
+1 3 5
+2 4
+
+Output:
+1 2 3 4 5
+
+## Constraints
+
+- Both input lines are individually sorted in non-decreasing order.
+
+## Expected Complexity
+
+- Time: O(n + m)
+- Space: O(n + m)

@@ -1,8 +1,28 @@
-palindrome checker
+# Problem 9 - Palindrome Checker
 
-Problem: Given a string, determine whether it reads the same forwards and backwards.
+Given a string, determine whether it reads the same forwards and backwards.
 
-Input: a string
-Output: True or False
-Example: “Nitin” → True
-Time: O(n), Space: O(1)
+## Input Format
+
+A single line string.
+
+## Output Format
+
+Print True if the string is a palindrome, otherwise print False.
+
+## Example
+
+Input:
+NitiN
+
+Output:
+True
+
+## Constraints
+
+- Comparison is case-sensitive.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

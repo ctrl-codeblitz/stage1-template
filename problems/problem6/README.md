@@ -1,8 +1,28 @@
-Prime or not prime
+# Problem 6 - Prime or Not Prime
 
-Problem: Given n (≥ 2), determine if it's prime using trial division up to √n.
+Given an integer n, determine whether it is prime.
 
-Input: integer n
-Output: Prime or Not prime
-Example: 17 → Prime
-Time: O(√n), Space: O(1)
+## Input Format
+
+A single integer n.
+
+## Output Format
+
+Print Prime if n is prime, otherwise print Not prime.
+
+## Example
+
+Input:
+17
+
+Output:
+Prime
+
+## Constraints
+
+- n >= 2.
+
+## Expected Complexity
+
+- Time: O(sqrt(n))
+- Space: O(1)

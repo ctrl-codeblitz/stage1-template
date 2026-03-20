@@ -1,8 +1,28 @@
-Reverse a string
+# Problem 5 - Reverse a String
 
-Problem: Reverse a string using an iterative approach (no built-in reverse).
+Reverse a string using an iterative approach.
 
-Input: a single line string
-Output: reversed string
-Example: hello → olleh
-Time: O(n), Space: O(n) if creating new string
+## Input Format
+
+A single line string.
+
+## Output Format
+
+A single line string: the reversed input string.
+
+## Example
+
+Input:
+hello
+
+Output:
+olleh
+
+## Constraints
+
+- Input may include letters, digits, spaces, and symbols.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(n) if creating a new string

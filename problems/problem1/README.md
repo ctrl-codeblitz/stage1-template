@@ -1,7 +1,32 @@
-Sum of numbers
+# Problem 1 - Sum of Numbers
 
-Problem: Read an integer n, then read n integers and output their sum.
-Input: first line n, second line n integers (or one per line)
-Output: sum
-Example: input: 3 #n=3 \n 3 4 3 --> output: 10
-Time: O(n), Space: O(1)
+Read an integer n, then read n integers and output their sum.
+
+## Input Format
+
+- First line: an integer n.
+- Remaining input: n integers separated by whitespace.
+  They may be on one line or multiple lines.
+
+## Output Format
+
+A single integer: the sum of the n integers.
+
+## Example
+
+Input:
+4
+1 2 3 4
+
+Output:
+10
+
+## Constraints
+
+- n >= 0.
+- Values fit in 64-bit signed range.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

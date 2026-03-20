@@ -1,8 +1,29 @@
-Iterative parenthesis checker
+# Problem 3 - Iterative Parenthesis Checker
 
-Problem: Given a string, check whether the number of '(' equals the number of ')'. (We only check counts, not proper nesting — iterative count only.)
+Given a string, check whether the number of '(' equals the number of ')'.
+This problem checks counts only, not proper nesting.
 
-Input: one line string
-Output: True if counts match, otherwise False
-Example: input: "(a + b) + (c)" → output: True
-Time: O(n), Space: O(1)
+## Input Format
+
+A single line string (may contain any characters).
+
+## Output Format
+
+Print True if the counts of '(' and ')' are equal, otherwise print False.
+
+## Example
+
+Input:
+(a + b) + (c)
+
+Output:
+True
+
+## Constraints
+
+- Length of string can be up to typical console input limits.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

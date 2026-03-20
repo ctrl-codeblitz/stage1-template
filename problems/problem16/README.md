@@ -1,7 +1,31 @@
-Problem: Given a string of characters, count the total number of consonants. A consonant is defined as any alphabetic character that is not a vowel (a, e, i, o, u).
-Input: A string text (may contain letters, numbers, spaces, and symbols)
-Output: An integer — the total count of consonants found in text = "Hello World!" would be output = 7
-Time Complexity: O(n) — The algorithm must visit each character in the string once.
-Space Complexity: O(1) — Only a single integer counter is used regardless of the input size
+# Problem 16 - Count Consonants
 
-For the purposes of this problem, y counts as a consonant
+Given a string, count the number of consonants.
+A consonant is any alphabetic character that is not a vowel (a, e, i, o, u).
+
+## Input Format
+
+A single line string text. The line may include letters, digits, spaces,
+punctuation, and symbols.
+
+## Output Format
+
+A single integer: the number of consonants in text.
+
+## Example
+
+Input:
+"Rhythm & Blues!"
+
+Output:
+9
+
+## Constraints
+
+- Counting is case-insensitive for vowel/consonant classification.
+- For this problem, y counts as a consonant.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

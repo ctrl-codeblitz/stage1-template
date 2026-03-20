@@ -1,9 +1,31 @@
-missing numbers in range
+# Problem 17 - Missing Number in Range
 
-Problem: Given an array containing n distinct numbers taken from 0..n, find the one number that is missing.
+Given distinct numbers from the range 0..n with one number missing, find the
+missing value.
 
-Input: array nums of length n containing distinct values from 0..n with one missing
-Output: the missing integer
-Example: [3,0,1] → 2
-Time: O(n)
-Space: O(1) using arithmetic or XOR trick
+## Input Format
+
+A whitespace-separated list of distinct integers (no explicit n line).
+The values are from 0..n with exactly one missing.
+
+## Output Format
+
+A single integer: the missing number.
+
+## Example
+
+Input:
+3 0 1
+
+Output:
+2
+
+## Constraints
+
+- Input contains distinct integers.
+- Exactly one value is missing from the full 0..n set.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

@@ -1,9 +1,31 @@
-remove duplicates
+# Problem 12 - Remove Duplicates
 
-Problem: Given a list of integers, return a new list with duplicates removed while preserving the first occurrence order.
+Given a list of integers, return the values with duplicates removed while
+preserving first-occurrence order.
 
-Input: array/list of integers nums
-Output: array/list of integers — nums with duplicates removed in original order
-Example: [1,2,2,3,1] → [1,2,3]
-Time: O(n) (using a hash set)
-Space: O(n) for the seen set/result
+## Input Format
+
+- First line: an integer n.
+- Second line (or subsequent whitespace-separated tokens): n integers.
+
+## Output Format
+
+Print the de-duplicated numbers in order, separated by spaces.
+
+## Example
+
+Input:
+5
+1 2 2 3 1
+
+Output:
+1 2 3
+
+## Constraints
+
+- n >= 0.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(n)

@@ -1,9 +1,28 @@
-Count vowels
+# Problem 10 - Count Vowels
 
-Problem: Count the number of vowels (A,E,I,O,U, case-insensitive) in a string.
+Count the number of vowels (A, E, I, O, U) in a string, case-insensitive.
 
-Input: a string s
-Output: an integer — the count of vowels in s
-Example: s = "Hello" → 2
-Time: O(n) — scan once.
-Space: O(1) — constant extra storage.
+## Input Format
+
+A single line string s.
+
+## Output Format
+
+A single integer: the number of vowels in s.
+
+## Example
+
+Input:
+Pillow
+
+Output:
+2
+
+## Constraints
+
+- Treat uppercase and lowercase vowels equally.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(1)

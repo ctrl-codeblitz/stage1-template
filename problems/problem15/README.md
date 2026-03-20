@@ -1,9 +1,28 @@
-check if strings are anagrams
+# Problem 15 - Anagram Checker
 
-Problem: Determine whether two strings are anagrams (contain the same characters with the same multiplicities).
+Determine whether two strings are anagrams (same character counts).
 
-Input: two strings s1, s2
-Output: True / False (or boolean)
-Example: "listen", "silent" → True
-Time: O(n)
-Space: O(k) where k = distinct chars
+## Input Format
+
+A single line containing two whitespace-separated strings: s1 and s2.
+
+## Output Format
+
+Print True if s1 and s2 are anagrams, otherwise print False.
+
+## Example
+
+Input:
+listen silent
+
+Output:
+True
+
+## Constraints
+
+- Comparison is case-sensitive.
+
+## Expected Complexity
+
+- Time: O(n)
+- Space: O(k), where k is the number of distinct characters

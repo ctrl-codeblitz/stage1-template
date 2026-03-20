@@ -16,7 +16,7 @@ A single integer: the sum of the two integers.
 ## Example
 
 Input:
-3 4
+-12 5
 
 Output:
 7
