@@ -14,8 +14,8 @@ A single line of space-separated integers: the merged sorted list.
 ## Example
 
 Input:
-1 3 5
-2 4
+- 1 3 5
+- 2 4
 
 Output:
 1 2 3 4 5
