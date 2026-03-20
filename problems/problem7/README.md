@@ -14,8 +14,8 @@ A single integer: the maximum value in the list.
 ## Example
 
 Input:
-5
-3 9 1 4 8
+- 5
+- 3 9 1 4 8
 
 Output:
 9
