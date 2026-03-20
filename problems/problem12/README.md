@@ -15,8 +15,8 @@ Print the de-duplicated numbers in order, separated by spaces.
 ## Example
 
 Input:
-5
-1 2 2 3 1
+- 5
+- 1 2 2 3 1
 
 Output:
 1 2 3
