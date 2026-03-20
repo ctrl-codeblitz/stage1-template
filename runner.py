@@ -57,7 +57,7 @@ def run_test_logic(sub, infile, expfile, timeout):
         build_dir, run_cwd = Path(tmp), sub.parent
 
         if lang == "python":
-            command = [sys.executable, str(sub)]
+            command = [sys.executable, str(sub.resolve())]
         elif lang == "cpp":
             command_str, err = compile_cpp(sub, build_dir)
             if err: return "COMPILE_ERROR", err, 0
