@@ -15,8 +15,8 @@ A single line string: the final message after appending only missing words.
 ## Example
 
 Input:
-hello world
-world friend hi
+- hello world
+- world friend hi
 
 Output:
 hello world friend hi
